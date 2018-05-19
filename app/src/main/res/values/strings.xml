@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">WebsocketDemo</string>
+    <string name="generate">Generate</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="empty">Waiting for the generation...</string>
+    <string name="amount">Amount</string>
+</resources>
