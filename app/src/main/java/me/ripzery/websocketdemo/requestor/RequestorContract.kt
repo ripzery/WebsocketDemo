@@ -1,4 +1,4 @@
-package me.ripzery.websocketdemo
+package me.ripzery.websocketdemo.requestor
 
 import co.omisego.omisego.model.transaction.request.TransactionRequest
 import java.math.BigDecimal
@@ -10,7 +10,7 @@ import java.math.BigDecimal
  * Created by Phuchit Sirimongkolsathien on 19/5/2018 AD.
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
-interface MainContract {
+interface RequestorContract {
     interface View {
         fun showTransactionInfo(transactionRequest: TransactionRequest)
         fun showSubscribe()

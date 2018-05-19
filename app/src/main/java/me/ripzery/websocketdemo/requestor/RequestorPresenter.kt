@@ -1,4 +1,4 @@
-package me.ripzery.websocketdemo
+package me.ripzery.websocketdemo.requestor
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -26,7 +26,7 @@ import java.math.BigDecimal
  * Created by Phuchit Sirimongkolsathien on 19/5/2018 AD.
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
-class MainPresenter(private val mView: MainContract.View) : MainContract.Presenter {
+class RequestorPresenter(private val mView: RequestorContract.View) : RequestorContract.Presenter {
     private val requestorAPIClient: OMGAPIClient
     private val socketClient: SocketClientContract.Client
 
@@ -96,7 +96,7 @@ class MainPresenter(private val mView: MainContract.View) : MainContract.Present
 
         socketClient.setChannelListener(object : SocketChannelCallback {
             override fun onError(apiError: APIError) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.d("Test", apiError.toString())
             }
 
             override fun onJoinedChannel(topic: SocketTopic) {
