@@ -10,4 +10,40 @@
         <item name="colorSecondaryDark">@color/primaryDarkColor</item>
     </style>
 
+    <style name="TextDisableSubtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:alpha">0.38</item>
+        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="fontFamily">@font/raleway_medium</item>
+    </style>
+
+    <style name="TextMediumEmphasizeSubtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:alpha">0.60</item>
+        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:fontFamily">@font/raleway_medium</item>
+    </style>
+
+    <style name="TextHighEmphasizeSubtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:alpha">0.87</item>
+        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:fontFamily">@font/raleway_medium</item>
+    </style>
+
+    <style name="MaterialButton" parent="TextAppearance.MaterialComponents.MaterialButton">
+        <item name="android:alpha">0.87</item>
+        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:fontFamily">@font/raleway_semibold</item>
+    </style>
+
+    <style name="Caption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:alpha">0.38</item>
+        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:fontFamily">@font/raleway_semibold</item>
+    </style>
+
+    <style name="TextHeadline5" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:alpha">0.84</item>
+        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="fontFamily">@font/raleway_black</item>
+    </style>
+
 </resources>

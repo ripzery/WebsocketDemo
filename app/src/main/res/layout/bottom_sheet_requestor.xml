@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAlmostWhite"
+    android:orientation="vertical"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="48dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <TextView
+        android:id="@+id/tvPeek"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/secondaryColor"
+        android:gravity="center"
+        android:fontFamily="@font/raleway"
+        android:text="Transaction Consumption Logs"
+        android:textColor="@android:color/white" />
+
+</LinearLayout>

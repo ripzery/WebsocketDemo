@@ -5,10 +5,12 @@
   <color name="primaryLightColor">#d27ebc</color>
   <color name="primaryLighterColor">#e4b2d6</color>
   <color name="primaryDarkColor">#ae0a8f</color>
-  <color name="primary800Color">#560064</color>
-  <color name="secondaryColor">#fa3336</color>
+  <color name="primary800Color">#71006f</color>
+  <color name="primary900Color">#560064</color>
+  <color name="secondaryColor">#ff7569</color>
   <color name="secondaryLightColor">#ff544b</color>
   <color name="secondaryDarkColor">#e50f10</color>
   <color name="primaryTextColor">#fafafa</color>
   <color name="secondaryTextColor">#000000</color>
+  <color name="colorAlmostWhite">#f0f0f0</color>
 </resources>

@@ -41,6 +41,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnConsume"
         style="@style/Widget.MaterialComponents.Button"
+        fontFamily="@font/raleway_semibold"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginStart="16dp"
@@ -69,15 +70,11 @@
 
         <TextView
             android:id="@+id/tvTitle"
-            style="@style/TextAppearance.MaterialComponents.Headline5"
+            style="@style/TextHeadline5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:alpha="0.87"
-            android:fontFamily="@font/raleway_semibold"
-            android:text="Transaction"
-            android:textColor="@color/secondaryTextColor"
-            android:textStyle="bold" />
+            android:text="Transaction" />
 
         <include
             android:id="@+id/layoutTransaction"
@@ -100,6 +97,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSubscribe"
         style="@style/Widget.MaterialComponents.Button"
+        fontFamily="@font/raleway_semibold"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginStart="16dp"

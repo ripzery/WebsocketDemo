@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -69,7 +71,6 @@ class ConsumerFragment : Fragment(), ConsumerContract.View {
 
     private fun updateTransactionInfo(transactionRequest: TransactionRequest) {
         TransitionManager.beginDelayedTransition(cardViewTransaction)
-        btnSubscribe.isEnabled = true
         layoutTransaction.visibility = View.VISIBLE
         tvEmpty.visibility = View.GONE
         val amount = transactionRequest.amount!!.divide(transactionRequest.mintedToken.subunitToUnit, 2, RoundingMode.HALF_EVEN)
@@ -80,6 +81,8 @@ class ConsumerFragment : Fragment(), ConsumerContract.View {
 
         btnConsume.setOnClickListener {
             mPresenter.consume(etAmount.text.toString().toBigDecimal(), transactionRequest)
+            val imm = ContextCompat.getSystemService<InputMethodManager>(context!!, InputMethodManager::class.java)
+            imm!!.hideSoftInputFromWindow(view!!.windowToken, 0)
         }
 
         btnSubscribe.setOnClickListener {
@@ -90,6 +93,7 @@ class ConsumerFragment : Fragment(), ConsumerContract.View {
 
     override fun showConsumption(transactionConsumption: TransactionConsumption) {
         this.transactionConsumption = transactionConsumption
+        btnSubscribe.isEnabled = true
     }
 
     override fun showSubscribe() {

@@ -1,118 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary800Color"
     tools:context=".MainActivity">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilAmount"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
+    <!-- Main content -->
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:outlineSpotShadowColor="@color/primaryTextColor"
-        android:textColorHint="@color/primaryTextColor"
-        app:boxStrokeColor="@color/primaryTextColor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:background="@color/primary800Color">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etAmount"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilAmount"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/amount"
-            android:inputType="numberDecimal"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:outlineSpotShadowColor="@color/primaryTextColor"
-            android:textColor="@color/primaryTextColor"
             android:textColorHint="@color/primaryTextColor"
+            app:boxStrokeColor="@color/primaryTextColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/amount"
+                android:inputType="numberDecimal"
+                android:outlineSpotShadowColor="@color/primaryTextColor"
+                android:textColor="@color/primaryTextColor"
+                android:textColorHint="@color/primaryTextColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="parent" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnGenerate"
-        style="@style/Widget.MaterialComponents.Button"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="@drawable/state_button"
-        android:text="@string/generate"
-        app:cornerRadius="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tilAmount" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/cardViewTransaction"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        app:cardBackgroundColor="#fafafa"
-        app:cardCornerRadius="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnGenerate"
-        app:strokeColor="#d7c4d1">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGenerate"
+            style="@style/Widget.MaterialComponents.Button"
+            fontFamily="@font/raleway_semibold"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@drawable/state_button"
+            android:text="@string/generate"
+            app:cornerRadius="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilAmount" />
 
-        <TextView
-            android:id="@+id/tvTitle"
-            style="@style/TextAppearance.MaterialComponents.Headline5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:alpha="0.87"
-            android:fontFamily="@font/raleway_semibold"
-            android:text="Transaction"
-            android:textColor="@color/secondaryTextColor"
-            android:textStyle="bold" />
+        <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/cardViewTransaction"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:cardBackgroundColor="#fafafa"
+            app:cardCornerRadius="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnGenerate"
+            app:strokeColor="#d7c4d1">
 
-        <include
-            android:id="@+id/layoutTransaction"
-            layout="@layout/layout_transaction" />
+            <TextView
+                android:id="@+id/tvTitle"
+                style="@style/TextHeadline5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Transaction" />
 
-        <TextView
-            android:id="@+id/tvEmpty"
-            style="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:alpha="0.38"
-            android:fontFamily="@font/raleway_semibold"
-            android:text="@string/empty"
-            android:textColor="@color/secondaryTextColor"
-            android:visibility="visible" />
+            <include
+                android:id="@+id/layoutTransaction"
+                layout="@layout/layout_transaction" />
 
-    </com.google.android.material.card.MaterialCardView>
+            <TextView
+                android:id="@+id/tvEmpty"
+                style="@style/TextDisableSubtitle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/empty"
+                android:visibility="visible" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnSubscribe"
-        style="@style/Widget.MaterialComponents.Button"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@drawable/state_button"
-        android:text="@string/subscribe"
-        app:cornerRadius="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        </com.google.android.material.card.MaterialCardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSubscribe"
+            style="@style/Widget.MaterialComponents.Button"
+            fontFamily="@font/raleway_semibold"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="64dp"
+            android:backgroundTint="@drawable/state_button"
+            android:text="@string/subscribe"
+            app:cornerRadius="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Bottom sheet -->
+    <include layout="@layout/bottom_sheet_requestor" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

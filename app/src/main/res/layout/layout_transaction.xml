@@ -8,17 +8,13 @@
 
     <TextView
         android:id="@+id/tvTitle"
-        style="@style/TextAppearance.MaterialComponents.Headline5"
+        style="@style/TextHeadline5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:alpha="0.87"
-        android:fontFamily="@font/raleway_semibold"
         android:text="Transaction"
-        android:textColor="@color/secondaryTextColor"
-        android:textStyle="bold"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,34 +22,28 @@
 
     <TextView
         android:id="@+id/tvId"
-        style="@style/TextAppearance.MaterialComponents.Subtitle1"
-        tools:text="ID: txc_01cbfg9qtdken61agxhx6wvj9h"
+        style="@style/TextMediumEmphasizeSubtitle1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:alpha="0.60"
-        android:fontFamily="@font/raleway_medium"
         android:text="ID: txc_01cbfg9qtdken61agxhx6wvj9h"
-        android:textColor="@color/secondaryTextColor"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+        tools:text="ID: txc_01cbfg9qtdken61agxhx6wvj9h" />
 
     <TextView
         android:id="@+id/tvAmount"
-        style="@style/TextAppearance.MaterialComponents.MaterialButton"
-        tools:text="Receive: 100 OMG"
+        style="@style/MaterialButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:alpha="0.87"
-        android:fontFamily="@font/raleway_semibold"
         android:text="Receive: 100 OMG"
         android:textColor="@color/primaryColor"
-        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvId" />
+        app:layout_constraintTop_toBottomOf="@+id/tvId"
+        tools:text="Receive: 100 OMG" />
 
     <ImageView
         android:id="@+id/ivCheck"
@@ -66,12 +56,11 @@
 
     <TextView
         android:id="@+id/tvCreatedAt"
-        style="@style/TextAppearance.MaterialComponents.Caption"
+        style="@style/Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:fontFamily="@font/raleway_semibold"
         android:text="Create At: 06:03:22 PM"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

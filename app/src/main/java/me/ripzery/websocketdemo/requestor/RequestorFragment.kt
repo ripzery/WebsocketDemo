@@ -7,11 +7,15 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.transition.TransitionManager
 import co.omisego.omisego.extension.bd
 import co.omisego.omisego.model.transaction.request.TransactionRequest
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.android.synthetic.main.bottom_sheet_requestor.*
 import kotlinx.android.synthetic.main.fragment_requestor.*
 import kotlinx.android.synthetic.main.layout_transaction.*
 import me.ripzery.websocketdemo.R
@@ -19,6 +23,7 @@ import me.ripzery.websocketdemo.viewmodels.TransactionRequestViewModel
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.time.ZoneId
+
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -67,11 +72,22 @@ class RequestorFragment : Fragment(), RequestorContract.View {
             it.isSelected = true
             val amount1 = etAmount.text.toString().toBigDecimal().times(10000.bd)
             mPresenter.doTransactionRequest(amount1)
+
+            val imm = getSystemService<InputMethodManager>(context!!, InputMethodManager::class.java)
+            imm!!.hideSoftInputFromWindow(view.windowToken, 0)
         }
 
         btnSubscribe.setOnClickListener {
             if (btnSubscribe.isSelected) mPresenter.doSubscribe(transactionRequest)
             else mPresenter.doUnsubscribe(transactionRequest)
+        }
+
+        tvPeek.setOnClickListener {
+            val bottomShit = BottomSheetBehavior.from(bottomSheet)
+            when (bottomShit.state) {
+                BottomSheetBehavior.STATE_EXPANDED -> bottomShit.state = BottomSheetBehavior.STATE_COLLAPSED
+                BottomSheetBehavior.STATE_COLLAPSED -> bottomShit.state = BottomSheetBehavior.STATE_EXPANDED
+            }
         }
     }
 
