@@ -15,6 +15,7 @@ import co.omisego.omisego.websocket.OMGSocketClient
 import co.omisego.omisego.websocket.SocketChannelCallback
 import co.omisego.omisego.websocket.SocketClientContract
 import co.omisego.omisego.websocket.SocketCustomEventCallback
+import me.ripzery.websocketdemo.network.IPAddress
 import java.math.BigDecimal
 
 
@@ -65,7 +66,7 @@ class ConsumerPresenter(val mView: ConsumerContract.View) : ConsumerContract.Pre
 
     private fun initializeOMGAPIClientByAuthToken(authToken: String, apiKey: String): OMGAPIClient {
         val client = EWalletClient.Builder {
-            baseUrl = "http://100.92.140.20:4000/api/"
+            baseUrl = "http://${IPAddress.HOST}:4000/api/"
             this.apiKey = apiKey
             authenticationToken = authToken
             debug = true
@@ -76,7 +77,7 @@ class ConsumerPresenter(val mView: ConsumerContract.View) : ConsumerContract.Pre
 
     private fun initializeSocketClientByAuthToken(authToken: String, apiKey: String): SocketClientContract.Client {
         val socketClient = OMGSocketClient.Builder {
-            baseURL = "ws://100.92.140.20:4000/api/socket/"
+            baseURL = "ws://${IPAddress.HOST}:4000/api/socket/"
             this.apiKey = apiKey
             authenticationToken = authToken
             debug = true

@@ -1,8 +1,8 @@
 package me.ripzery.websocketdemo.requestor
 
 import co.omisego.omisego.model.transaction.request.TransactionRequest
+import me.ripzery.websocketdemo.data.ConsumeLog
 import java.math.BigDecimal
-
 
 /*
  * OmiseGO
@@ -15,6 +15,7 @@ interface RequestorContract {
         fun showTransactionInfo(transactionRequest: TransactionRequest)
         fun showSubscribe()
         fun showUnsubscribe()
+        fun addLog(consumeLog: ConsumeLog)
     }
 
     interface Presenter {

@@ -17,6 +17,8 @@ import co.omisego.omisego.websocket.OMGSocketClient
 import co.omisego.omisego.websocket.SocketChannelCallback
 import co.omisego.omisego.websocket.SocketClientContract
 import co.omisego.omisego.websocket.SocketCustomEventCallback
+import me.ripzery.websocketdemo.data.ConsumeLog
+import me.ripzery.websocketdemo.network.IPAddress
 import java.math.BigDecimal
 
 
@@ -29,6 +31,7 @@ import java.math.BigDecimal
 class RequestorPresenter(private val mView: RequestorContract.View) : RequestorContract.Presenter {
     private val requestorAPIClient: OMGAPIClient
     private val socketClient: SocketClientContract.Client
+    private var currentTransactionRequest: TransactionRequest? = null
 
     init {
         requestorAPIClient = initializeOMGAPIClientByAuthToken("ZyqbUmnHGCKjquCR1LGGVWQEiNA-EB9MJkMCcdd1nXo", "-c_1xZaBzcDZe2CRPwGq1uJ7qfSB7rHlmMaZG6mKxAQ") // User01
@@ -49,6 +52,8 @@ class RequestorPresenter(private val mView: RequestorContract.View) : RequestorC
 
             @SuppressLint("SetTextI18n")
             override fun success(response: OMGResponse<TransactionRequest>) {
+                currentTransactionRequest?.stopListening(socketClient)
+                currentTransactionRequest = response.data
                 mView.showTransactionInfo(response.data)
             }
         })
@@ -66,6 +71,12 @@ class RequestorPresenter(private val mView: RequestorContract.View) : RequestorC
 
             override fun onTransactionConsumptionRequest(transactionConsumption: TransactionConsumption) {
                 Log.d("Requestor", transactionConsumption.amount.toString())
+                mView.addLog(
+                        ConsumeLog(
+                                transactionConsumption.user?.username
+                                        ?: "Who wa?", transactionConsumption.amount
+                        )
+                )
             }
         })
     }
@@ -77,7 +88,7 @@ class RequestorPresenter(private val mView: RequestorContract.View) : RequestorC
 
     private fun initializeOMGAPIClientByAuthToken(authToken: String, apiKey: String): OMGAPIClient {
         val client = EWalletClient.Builder {
-            baseUrl = "http://100.92.140.20:4000/api/"
+            baseUrl = "http://${IPAddress.HOST}:4000/api/"
             this.apiKey = apiKey
             authenticationToken = authToken
             debug = true
@@ -88,7 +99,7 @@ class RequestorPresenter(private val mView: RequestorContract.View) : RequestorC
 
     private fun initializeSocketClientByAuthToken(authToken: String, apiKey: String): SocketClientContract.Client {
         val socketClient = OMGSocketClient.Builder {
-            baseURL = "ws://100.92.140.20:4000/api/socket/"
+            baseURL = "ws://${IPAddress.HOST}:4000/api/socket/"
             this.apiKey = apiKey
             authenticationToken = authToken
             debug = true

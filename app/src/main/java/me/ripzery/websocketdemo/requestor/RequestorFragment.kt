@@ -11,6 +11,8 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionManager
 import co.omisego.omisego.extension.bd
 import co.omisego.omisego.model.transaction.request.TransactionRequest
@@ -19,6 +21,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_requestor.*
 import kotlinx.android.synthetic.main.fragment_requestor.*
 import kotlinx.android.synthetic.main.layout_transaction.*
 import me.ripzery.websocketdemo.R
+import me.ripzery.websocketdemo.data.ConsumeLog
 import me.ripzery.websocketdemo.viewmodels.TransactionRequestViewModel
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -33,6 +36,8 @@ class RequestorFragment : Fragment(), RequestorContract.View {
     private lateinit var mPresenter: RequestorPresenter
     private lateinit var transactionRequest: TransactionRequest
     private lateinit var transactionRequestViewModel: TransactionRequestViewModel
+    private var logList: MutableList<ConsumeLog> = mutableListOf()
+    private lateinit var logRecyclerAdapter: ConsumeLogRecyclerAdapter
     var lambdaTransactionRequest: ((TransactionRequest) -> Unit)? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +46,6 @@ class RequestorFragment : Fragment(), RequestorContract.View {
         transactionRequestViewModel = ViewModelProviders.of(activity!!).get(TransactionRequestViewModel::class.java)
         return rootView
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mPresenter = RequestorPresenter(this)
@@ -65,7 +69,6 @@ class RequestorFragment : Fragment(), RequestorContract.View {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
-
         })
 
         btnGenerate.setOnClickListener {
@@ -89,6 +92,17 @@ class RequestorFragment : Fragment(), RequestorContract.View {
                 BottomSheetBehavior.STATE_COLLAPSED -> bottomShit.state = BottomSheetBehavior.STATE_EXPANDED
             }
         }
+
+        logRecyclerAdapter = ConsumeLogRecyclerAdapter(logList)
+        val layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
+        val dividerItemDecoration = DividerItemDecoration(recyclerView.context, layoutManager.orientation)
+        recyclerView.adapter = logRecyclerAdapter
+        recyclerView.layoutManager = layoutManager
+        recyclerView.addItemDecoration(dividerItemDecoration)
+    }
+
+    override fun addLog(consumeLog: ConsumeLog) {
+        logRecyclerAdapter.addItem(consumeLog)
     }
 
 

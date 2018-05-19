@@ -4,6 +4,7 @@
     <string name="subscribe">Subscribe</string>
     <string name="empty">Waiting for the generation...</string>
     <string name="amount">Amount</string>
+    <string name="sent_amount">has sent %2d OMG.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
