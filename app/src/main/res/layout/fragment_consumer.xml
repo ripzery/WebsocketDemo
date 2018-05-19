@@ -41,7 +41,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnConsume"
         style="@style/Widget.MaterialComponents.Button"
-        android:layout_width="352dp"
+        android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
@@ -53,7 +53,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tilAmount" />
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/cardViewTransaction"
         android:layout_width="match_parent"
         android:layout_height="180dp"
@@ -100,7 +100,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSubscribe"
         style="@style/Widget.MaterialComponents.Button"
-        android:layout_width="352dp"
+        android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"

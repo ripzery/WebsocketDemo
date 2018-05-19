@@ -13,11 +13,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val viewPager = viewPager as ViewPager
-        viewPager.adapter = PagerAdapter(supportFragmentManager)
+        val pagerAdapter = PagerAdapter(supportFragmentManager)
+        viewPager.adapter = pagerAdapter
         tabLayout.setupWithViewPager(viewPager)
-
-//        mRequestorFragment = RequestorFragment()
-
-//        supportFragmentManager.beginTransaction().replace(R.id.layoutRoot, mRequestorFragment).commit()
     }
 }

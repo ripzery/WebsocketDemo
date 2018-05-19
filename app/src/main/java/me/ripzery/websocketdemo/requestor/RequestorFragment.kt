@@ -8,12 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.transition.TransitionManager
 import co.omisego.omisego.extension.bd
 import co.omisego.omisego.model.transaction.request.TransactionRequest
 import kotlinx.android.synthetic.main.fragment_requestor.*
 import kotlinx.android.synthetic.main.layout_transaction.*
 import me.ripzery.websocketdemo.R
+import me.ripzery.websocketdemo.viewmodels.TransactionRequestViewModel
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.time.ZoneId
@@ -25,10 +27,13 @@ class RequestorFragment : Fragment(), RequestorContract.View {
 
     private lateinit var mPresenter: RequestorPresenter
     private lateinit var transactionRequest: TransactionRequest
+    private lateinit var transactionRequestViewModel: TransactionRequestViewModel
+    var lambdaTransactionRequest: ((TransactionRequest) -> Unit)? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_requestor, container, false)
+        transactionRequestViewModel = ViewModelProviders.of(activity!!).get(TransactionRequestViewModel::class.java)
         return rootView
     }
 
@@ -70,8 +75,11 @@ class RequestorFragment : Fragment(), RequestorContract.View {
         }
     }
 
+
     override fun showTransactionInfo(transactionRequest: TransactionRequest) {
         this.transactionRequest = transactionRequest
+        lambdaTransactionRequest?.invoke(transactionRequest)
+        transactionRequestViewModel.liveTransactionRequest.value = transactionRequest
         TransitionManager.beginDelayedTransition(cardViewTransaction)
         btnSubscribe.isEnabled = true
         layoutTransaction.visibility = View.VISIBLE
