@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.support.transition.TransitionManager
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v4.content.ContextCompat.getSystemService
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -16,8 +17,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import co.omisego.omisego.extension.bd
+import co.omisego.omisego.model.transaction.consumption.TransactionConsumption
 import co.omisego.omisego.model.transaction.request.TransactionRequest
+import com.afollestad.materialdialogs.MaterialDialog
 import kotlinx.android.synthetic.main.bottom_sheet_requestor.*
 import kotlinx.android.synthetic.main.fragment_requestor.*
 import kotlinx.android.synthetic.main.layout_transaction.*
@@ -36,6 +40,7 @@ class RequestorFragment : Fragment(), RequestorContract.View {
     private lateinit var transactionRequest: TransactionRequest
     private lateinit var transactionRequestViewModel: TransactionRequestViewModel
     private var logList: MutableList<ConsumeLog> = mutableListOf()
+    private var confirmDialog: MaterialDialog? = null
     private lateinit var logRecyclerAdapter: ConsumeLogRecyclerAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -133,6 +138,32 @@ class RequestorFragment : Fragment(), RequestorContract.View {
         return DecimalFormat("#,###.00").format(amount)
     }
 
+
+    override fun showDialog(transactionConsumption: TransactionConsumption) {
+        val name = transactionConsumption.user?.username
+        val amount = transactionConsumption.amount
+        val subunitToUnit = transactionConsumption.mintedToken.subunitToUnit
+
+        confirmDialog = confirmDialog ?: MaterialDialog.Builder(context!!)
+                .typeface("raleway_semibold.ttf", "raleway_medium.ttf")
+                .title("Incoming transaction")
+                .positiveText("Approve")
+                .positiveColor(ContextCompat.getColor(context!!, R.color.primaryDarkColor))
+                .negativeText("Reject")
+                .negativeColor(ContextCompat.getColor(context!!, R.color.secondaryLightColor))
+                .autoDismiss(true)
+                .onPositive { _, _ ->
+                    mPresenter.approve(transactionConsumption)
+                }
+                .onNegative { _, _ ->
+                    mPresenter.reject(transactionConsumption)
+                }
+                .build()
+
+        confirmDialog?.setContent("$name has sent you ${formatAmount(amount, subunitToUnit)} OMG 🤪")
+        confirmDialog?.show()
+    }
+
     override fun showSubscribe() {
         btnSubscribe.text = "Subscribe"
         btnSubscribe.isSelected = true
@@ -141,6 +172,14 @@ class RequestorFragment : Fragment(), RequestorContract.View {
     override fun showUnsubscribe() {
         btnSubscribe.text = "Unsubscribe"
         btnSubscribe.isSelected = false
+    }
+
+    override fun showApprove() {
+        Toast.makeText(context!!, "Approved", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showReject() {
+        Toast.makeText(context!!, "Rejected", Toast.LENGTH_SHORT).show()
     }
 
 }

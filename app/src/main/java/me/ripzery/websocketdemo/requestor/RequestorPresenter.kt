@@ -8,6 +8,8 @@ import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.OMGResponse
 import co.omisego.omisego.model.socket.SocketTopic
 import co.omisego.omisego.model.transaction.consumption.TransactionConsumption
+import co.omisego.omisego.model.transaction.consumption.approve
+import co.omisego.omisego.model.transaction.consumption.reject
 import co.omisego.omisego.model.transaction.request.TransactionRequest
 import co.omisego.omisego.model.transaction.request.TransactionRequestCreateParams
 import co.omisego.omisego.model.transaction.request.TransactionRequestType
@@ -62,28 +64,52 @@ class RequestorPresenter(private val mView: RequestorContract.View) : RequestorC
     override fun doSubscribe(transactionRequest: TransactionRequest) {
         transactionRequest.startListeningEvents(socketClient, callback = object : SocketCustomEventCallback.TransactionRequestCallback() {
             override fun onTransactionConsumptionFinalizedFail(apiError: APIError) {
-
+                Log.d("Error", apiError.toString())
             }
 
             override fun onTransactionConsumptionFinalizedSuccess(transactionConsumption: TransactionConsumption) {
-
+                Log.d("Test", transactionConsumption.toString())
             }
 
             override fun onTransactionConsumptionRequest(transactionConsumption: TransactionConsumption) {
                 Log.d("Requestor", transactionConsumption.amount.toString())
                 mView.addLog(
                         ConsumeLog(
-                                transactionConsumption.user?.username
-                                        ?: "Who wa?", transactionConsumption.amount
+                                transactionConsumption.user?.username ?: "Who wa?",
+                                transactionConsumption.amount
                         )
                 )
+                mView.showDialog(transactionConsumption)
             }
         })
     }
 
-
     override fun doUnsubscribe(transactionRequest: TransactionRequest) {
         transactionRequest.stopListening(socketClient)
+    }
+
+    override fun approve(transactionConsumption: TransactionConsumption) {
+        transactionConsumption.approve(requestorAPIClient).enqueue(object : OMGCallback<TransactionConsumption> {
+            override fun fail(response: OMGResponse<APIError>) {
+                Log.d("error", response.data.toString())
+            }
+
+            override fun success(response: OMGResponse<TransactionConsumption>) {
+                mView.showApprove()
+            }
+        })
+    }
+
+    override fun reject(transactionConsumption: TransactionConsumption) {
+        transactionConsumption.reject(requestorAPIClient).enqueue(object : OMGCallback<TransactionConsumption> {
+            override fun fail(response: OMGResponse<APIError>) {
+                Log.d("error", response.data.toString())
+            }
+
+            override fun success(response: OMGResponse<TransactionConsumption>) {
+                mView.showReject()
+            }
+        })
     }
 
     private fun initializeOMGAPIClientByAuthToken(authToken: String, apiKey: String): OMGAPIClient {

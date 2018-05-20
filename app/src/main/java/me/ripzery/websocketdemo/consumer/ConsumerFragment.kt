@@ -38,7 +38,6 @@ class ConsumerFragment : Fragment(), ConsumerContract.View {
         return inflater.inflate(R.layout.fragment_consumer, container, false)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mPresenter = ConsumerPresenter(this)
         layoutTransaction.visibility = View.GONE
@@ -101,7 +100,7 @@ class ConsumerFragment : Fragment(), ConsumerContract.View {
         tvCreatedAt.text = "Created At: ${localTime.hour}:${localTime.minute}:${localTime.second} PM"
 
         btnConsume.setOnClickListener {
-            mPresenter.consume(etAmount.text.toString().toBigDecimal(), transactionRequest)
+            mPresenter.consume(etAmount.text.toString().toBigDecimal().multiply(transactionRequest.mintedToken.subunitToUnit), transactionRequest)
             val imm = ContextCompat.getSystemService<InputMethodManager>(context!!, InputMethodManager::class.java)
             imm!!.hideSoftInputFromWindow(view!!.windowToken, 0)
         }
