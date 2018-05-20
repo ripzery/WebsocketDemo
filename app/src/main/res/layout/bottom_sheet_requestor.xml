@@ -15,7 +15,7 @@
         android:id="@+id/tvPeek"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/secondaryColor"
+        android:background="@color/primary900Color"
         android:fontFamily="@font/raleway"
         android:gravity="center"
         android:text="Transaction Consumption Logs"

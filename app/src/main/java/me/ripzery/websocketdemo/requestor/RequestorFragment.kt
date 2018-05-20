@@ -1,6 +1,7 @@
 package me.ripzery.websocketdemo.requestor
 
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -22,14 +23,12 @@ import kotlinx.android.synthetic.main.fragment_requestor.*
 import kotlinx.android.synthetic.main.layout_transaction.*
 import me.ripzery.websocketdemo.R
 import me.ripzery.websocketdemo.data.ConsumeLog
+import me.ripzery.websocketdemo.qr.ShowQRFragment
 import me.ripzery.websocketdemo.viewmodels.TransactionRequestViewModel
+import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.time.ZoneId
-
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class RequestorFragment : Fragment(), RequestorContract.View {
 
@@ -55,6 +54,7 @@ class RequestorFragment : Fragment(), RequestorContract.View {
         btnGenerate.isEnabled = false
         btnSubscribe.isSelected = true
         btnGenerate.isSelected = true
+        btnShowQR.isEnabled = false
 
         etAmount.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
@@ -93,6 +93,14 @@ class RequestorFragment : Fragment(), RequestorContract.View {
             }
         }
 
+        btnShowQR.setOnClickListener {
+            val showQRFragment = ShowQRFragment
+                    .newInstance(
+                            "${transactionRequest.type.name}: ${formatAmount(transactionRequest.amount!!, transactionRequest.mintedToken.subunitToUnit)} ${transactionRequest.mintedToken.symbol}".toUpperCase()
+                    )
+            showQRFragment.show(childFragmentManager, "fragment_requestor")
+        }
+
         logRecyclerAdapter = ConsumeLogRecyclerAdapter(logList)
         val layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
         val dividerItemDecoration = DividerItemDecoration(recyclerView.context, layoutManager.orientation)
@@ -106,19 +114,25 @@ class RequestorFragment : Fragment(), RequestorContract.View {
     }
 
 
+    @SuppressLint("SetTextI18n")
     override fun showTransactionInfo(transactionRequest: TransactionRequest) {
         this.transactionRequest = transactionRequest
         lambdaTransactionRequest?.invoke(transactionRequest)
         transactionRequestViewModel.liveTransactionRequest.value = transactionRequest
         TransitionManager.beginDelayedTransition(cardViewTransaction)
+        btnShowQR.isEnabled = true
         btnSubscribe.isEnabled = true
         layoutTransaction.visibility = View.VISIBLE
         tvEmpty.visibility = View.GONE
-        val amount = transactionRequest.amount!!.divide(transactionRequest.mintedToken.subunitToUnit, 2, RoundingMode.HALF_EVEN)
-        tvAmount.text = "${transactionRequest.type.name.toUpperCase()}: ${DecimalFormat("#,###.00").format(amount)} ${transactionRequest.mintedToken.symbol}"
+        tvAmount.text = "${transactionRequest.type.name.toUpperCase()}: ${formatAmount(transactionRequest.amount!!, transactionRequest.mintedToken.subunitToUnit)} ${transactionRequest.mintedToken.symbol}"
         tvId.text = "ID: ${transactionRequest.id}"
         val localTime = transactionRequest.createdAt!!.toInstant().atZone(ZoneId.systemDefault()).toLocalTime()
         tvCreatedAt.text = "Created At: ${localTime.hour}:${localTime.minute}:${localTime.second} PM"
+    }
+
+    private fun formatAmount(amount: BigDecimal, subunitToUnit: BigDecimal): String {
+        val amount = amount.divide(subunitToUnit, 2, RoundingMode.HALF_EVEN)
+        return DecimalFormat("#,###.00").format(amount)
     }
 
     override fun showSubscribe() {

@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'androidx.navigation.safeargs'
 
 android {
     compileSdkVersion 'android-P'
@@ -22,8 +23,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation(name:'omisego-sdk-debug', ext:'aar')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation(name: 'omisego-sdk-debug', ext: 'aar')
     implementation 'com.google.android.material:material:1.0.0-alpha1'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
@@ -31,7 +32,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0-alpha1'
-    implementation 'androidx.core:core-ktx:1.0.0-alpha1'
+    implementation 'com.google.zxing:core:3.3.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha2'

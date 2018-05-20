@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layoutRoot"
+    android:id="@+id/layoutRootConsumer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary800Color"
@@ -98,16 +98,15 @@
         android:id="@+id/btnSubscribe"
         style="@style/Widget.MaterialComponents.Button"
         fontFamily="@font/raleway_semibold"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="57dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="148dp"
+        android:layout_marginTop="156dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="@drawable/state_button"
         android:text="@string/subscribe"
         app:cornerRadius="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnConsume" />
 
@@ -115,6 +114,7 @@
         android:id="@+id/barrier2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:barrierDirection="left" />
+        app:barrierDirection="left"
+        tools:layout_editor_absoluteX="384dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
