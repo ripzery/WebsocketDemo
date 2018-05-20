@@ -1,9 +1,8 @@
 package me.ripzery.websocketdemo.viewmodels
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.ViewModel
 import co.omisego.omisego.model.transaction.request.TransactionRequest
-
 
 /*
  * OmiseGO

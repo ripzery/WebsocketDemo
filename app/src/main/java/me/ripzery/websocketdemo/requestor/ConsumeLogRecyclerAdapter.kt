@@ -1,9 +1,9 @@
 package me.ripzery.websocketdemo.requestor
 
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.viewholder_tx_consumption_log.view.*
 import me.ripzery.websocketdemo.R
 import me.ripzery.websocketdemo.data.ConsumeLog

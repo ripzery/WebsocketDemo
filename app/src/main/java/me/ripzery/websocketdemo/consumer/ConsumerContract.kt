@@ -16,10 +16,12 @@ interface ConsumerContract {
         fun showConsumption(transactionConsumption: TransactionConsumption)
         fun showSubscribe()
         fun showUnsubscribe()
+        fun showTransactionRequest(transactionRequest: TransactionRequest)
     }
 
     interface Presenter {
         fun consume(amount: BigDecimal, transactionRequest: TransactionRequest)
+        fun getTransactionById(id: String)
         fun doSubscribe(transactionConsumption: TransactionConsumption)
         fun doUnsubscribe(transactionConsumption: TransactionConsumption)
     }

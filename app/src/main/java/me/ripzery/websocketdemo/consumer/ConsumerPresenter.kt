@@ -8,6 +8,7 @@ import co.omisego.omisego.model.OMGResponse
 import co.omisego.omisego.model.socket.SocketTopic
 import co.omisego.omisego.model.transaction.consumption.TransactionConsumption
 import co.omisego.omisego.model.transaction.request.TransactionRequest
+import co.omisego.omisego.model.transaction.request.TransactionRequestParams
 import co.omisego.omisego.model.transaction.request.toTransactionConsumptionParams
 import co.omisego.omisego.network.ewallet.EWalletClient
 import co.omisego.omisego.operation.startListeningEvents
@@ -47,6 +48,7 @@ class ConsumerPresenter(val mView: ConsumerContract.View) : ConsumerContract.Pre
                 })
     }
 
+
     override fun doSubscribe(transactionConsumption: TransactionConsumption) {
         transactionConsumption.startListeningEvents(socketClient, mapOf(), object : SocketCustomEventCallback.TransactionConsumptionCallback() {
             override fun onTransactionConsumptionFinalizedFail(apiError: APIError) {
@@ -56,6 +58,18 @@ class ConsumerPresenter(val mView: ConsumerContract.View) : ConsumerContract.Pre
             override fun onTransactionConsumptionFinalizedSuccess(transactionConsumption: TransactionConsumption) {
                 Log.d("Consumer", transactionConsumption.toString())
                 mView.showConsumption(transactionConsumption)
+            }
+        })
+    }
+
+    override fun getTransactionById(id: String) {
+        consumerAPIClient.retrieveTransactionRequest(TransactionRequestParams(id)).enqueue(object : OMGCallback<TransactionRequest> {
+            override fun fail(response: OMGResponse<APIError>) {
+
+            }
+
+            override fun success(response: OMGResponse<TransactionRequest>) {
+                mView.showTransactionRequest(response.data)
             }
         })
     }

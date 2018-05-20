@@ -1,6 +1,14 @@
 package me.ripzery.websocketdemo.consumer
 
+import android.annotation.SuppressLint
+import android.app.Activity.RESULT_OK
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
+import android.support.transition.TransitionManager
+import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -8,16 +16,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.transition.TransitionManager
+import android.widget.Toast
 import co.omisego.omisego.model.transaction.consumption.TransactionConsumption
 import co.omisego.omisego.model.transaction.request.TransactionRequest
 import kotlinx.android.synthetic.main.fragment_consumer.*
 import kotlinx.android.synthetic.main.layout_transaction.*
 import me.ripzery.websocketdemo.R
+import me.ripzery.websocketdemo.qr.ScanQRActivity
 import me.ripzery.websocketdemo.viewmodels.TransactionRequestViewModel
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -47,7 +52,7 @@ class ConsumerFragment : Fragment(), ConsumerContract.View {
         transactionRequestViewModel.liveTransactionRequest.observe(this, Observer {
             it ?: return@Observer
             Log.d("Consumer", it.toString())
-            updateTransactionInfo(it)
+            showTransactionRequest(it)
         })
 
         etAmount.addTextChangedListener(object : TextWatcher {
@@ -67,9 +72,25 @@ class ConsumerFragment : Fragment(), ConsumerContract.View {
         })
 
 
+        btnScanQR.setOnClickListener {
+            startActivityForResult(Intent(this.activity, ScanQRActivity::class.java), 100)
+        }
     }
 
-    private fun updateTransactionInfo(transactionRequest: TransactionRequest) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK) {
+            when (requestCode) {
+                100 -> {
+                    val transactionRequestID = data?.getStringExtra("id") ?: return
+                    mPresenter.getTransactionById(transactionRequestID)
+                }
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun showTransactionRequest(transactionRequest: TransactionRequest) {
         TransitionManager.beginDelayedTransition(cardViewTransaction)
         layoutTransaction.visibility = View.VISIBLE
         tvEmpty.visibility = View.GONE
@@ -93,6 +114,7 @@ class ConsumerFragment : Fragment(), ConsumerContract.View {
 
     override fun showConsumption(transactionConsumption: TransactionConsumption) {
         this.transactionConsumption = transactionConsumption
+        Toast.makeText(activity, "Consume transaction success", Toast.LENGTH_SHORT).show()
         btnSubscribe.isEnabled = true
     }
 

@@ -1,8 +1,7 @@
 package me.ripzery.websocketdemo
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.viewpager.widget.ViewPager
+import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import me.ripzery.websocketdemo.requestor.RequestorFragment
 
@@ -12,7 +11,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val viewPager = viewPager as ViewPager
         val pagerAdapter = PagerAdapter(supportFragmentManager)
         viewPager.adapter = pagerAdapter
         tabLayout.setupWithViewPager(viewPager)

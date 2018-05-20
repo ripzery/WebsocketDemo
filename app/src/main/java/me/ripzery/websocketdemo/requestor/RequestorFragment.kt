@@ -2,22 +2,22 @@ package me.ripzery.websocketdemo.requestor
 
 
 import android.annotation.SuppressLint
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.design.widget.BottomSheetBehavior
+import android.support.transition.TransitionManager
+import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat.getSystemService
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.transition.TransitionManager
 import co.omisego.omisego.extension.bd
 import co.omisego.omisego.model.transaction.request.TransactionRequest
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.bottom_sheet_requestor.*
 import kotlinx.android.synthetic.main.fragment_requestor.*
 import kotlinx.android.synthetic.main.layout_transaction.*
@@ -37,7 +37,6 @@ class RequestorFragment : Fragment(), RequestorContract.View {
     private lateinit var transactionRequestViewModel: TransactionRequestViewModel
     private var logList: MutableList<ConsumeLog> = mutableListOf()
     private lateinit var logRecyclerAdapter: ConsumeLogRecyclerAdapter
-    var lambdaTransactionRequest: ((TransactionRequest) -> Unit)? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -117,7 +116,6 @@ class RequestorFragment : Fragment(), RequestorContract.View {
     @SuppressLint("SetTextI18n")
     override fun showTransactionInfo(transactionRequest: TransactionRequest) {
         this.transactionRequest = transactionRequest
-        lambdaTransactionRequest?.invoke(transactionRequest)
         transactionRequestViewModel.liveTransactionRequest.value = transactionRequest
         TransitionManager.beginDelayedTransition(cardViewTransaction)
         btnShowQR.isEnabled = true
