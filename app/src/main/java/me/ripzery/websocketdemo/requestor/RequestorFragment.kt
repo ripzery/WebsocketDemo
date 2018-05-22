@@ -1,6 +1,5 @@
 package me.ripzery.websocketdemo.requestor
 
-
 import android.annotation.SuppressLint
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -19,6 +18,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import co.omisego.omisego.extension.bd
+import co.omisego.omisego.model.Balance
 import co.omisego.omisego.model.transaction.consumption.TransactionConsumption
 import co.omisego.omisego.model.transaction.request.TransactionRequest
 import com.afollestad.materialdialogs.MaterialDialog
@@ -44,7 +44,7 @@ class RequestorFragment : Fragment(), RequestorContract.View {
     private lateinit var logRecyclerAdapter: ConsumeLogRecyclerAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+        savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_requestor, container, false)
         transactionRequestViewModel = ViewModelProviders.of(activity!!).get(TransactionRequestViewModel::class.java)
         return rootView
@@ -77,7 +77,7 @@ class RequestorFragment : Fragment(), RequestorContract.View {
 
         btnGenerate.setOnClickListener {
             it.isSelected = true
-            val amount1 = etAmount.text.toString().toBigDecimal().times(10000.bd)
+            val amount1 = etAmount.text.toString().toBigDecimal().times(100.bd)
             mPresenter.doTransactionRequest(amount1)
 
             val imm = getSystemService<InputMethodManager>(context!!, InputMethodManager::class.java)
@@ -99,9 +99,9 @@ class RequestorFragment : Fragment(), RequestorContract.View {
 
         btnShowQR.setOnClickListener {
             val showQRFragment = ShowQRFragment
-                    .newInstance(
-                            "${transactionRequest.type.name}: ${formatAmount(transactionRequest.amount!!, transactionRequest.mintedToken.subunitToUnit)} ${transactionRequest.mintedToken.symbol}".toUpperCase()
-                    )
+                .newInstance(
+                    "${transactionRequest.type.name}: ${formatAmount(transactionRequest.amount!!, transactionRequest.mintedToken.subunitToUnit)} ${transactionRequest.mintedToken.symbol}".toUpperCase()
+                )
             showQRFragment.show(childFragmentManager, "fragment_requestor")
         }
 
@@ -111,17 +111,23 @@ class RequestorFragment : Fragment(), RequestorContract.View {
         recyclerView.adapter = logRecyclerAdapter
         recyclerView.layoutManager = layoutManager
         recyclerView.addItemDecoration(dividerItemDecoration)
+
+        mPresenter.getBalance()
     }
 
-    override fun addLog(consumeLog: ConsumeLog) {
-        logRecyclerAdapter.addItem(consumeLog)
+    override fun addLog(transactionConsumption: TransactionConsumption) {
+        val amount = formatAmount(transactionConsumption.amount, transactionConsumption.mintedToken.subunitToUnit)
+        logRecyclerAdapter.addItem(ConsumeLog(transactionConsumption.user?.username ?: "", amount))
     }
-
 
     @SuppressLint("SetTextI18n")
     override fun showTransactionInfo(transactionRequest: TransactionRequest) {
         this.transactionRequest = transactionRequest
         transactionRequestViewModel.liveTransactionRequest.value = transactionRequest
+       updateTransactionCardView(transactionRequest)
+    }
+
+    private fun updateTransactionCardView(transactionRequest: TransactionRequest){
         TransitionManager.beginDelayedTransition(cardViewTransaction)
         btnShowQR.isEnabled = true
         btnSubscribe.isEnabled = true
@@ -138,27 +144,32 @@ class RequestorFragment : Fragment(), RequestorContract.View {
         return DecimalFormat("#,###.00").format(amount)
     }
 
+    @SuppressLint("SetTextI18n")
+    override fun showBalance(balance: Balance) {
+        TransitionManager.beginDelayedTransition(layoutRoot)
+        tvUserInfo.text = "User1's balance = ${formatAmount(balance.amount, balance.mintedToken.subunitToUnit)} OMG"
+    }
 
     override fun showDialog(transactionConsumption: TransactionConsumption) {
         val name = transactionConsumption.user?.username
         val amount = transactionConsumption.amount
         val subunitToUnit = transactionConsumption.mintedToken.subunitToUnit
 
-        confirmDialog = confirmDialog ?: MaterialDialog.Builder(context!!)
-                .typeface("raleway_semibold.ttf", "raleway_medium.ttf")
-                .title("Incoming transaction")
-                .positiveText("Approve")
-                .positiveColor(ContextCompat.getColor(context!!, R.color.primaryDarkColor))
-                .negativeText("Reject")
-                .negativeColor(ContextCompat.getColor(context!!, R.color.secondaryLightColor))
-                .autoDismiss(true)
-                .onPositive { _, _ ->
-                    mPresenter.approve(transactionConsumption)
-                }
-                .onNegative { _, _ ->
-                    mPresenter.reject(transactionConsumption)
-                }
-                .build()
+        confirmDialog = MaterialDialog.Builder(context!!)
+            .typeface("raleway_semibold.ttf", "raleway_medium.ttf")
+            .title("Incoming transaction")
+            .positiveText("Approve")
+            .positiveColor(ContextCompat.getColor(context!!, R.color.primaryDarkColor))
+            .negativeText("Reject")
+            .negativeColor(ContextCompat.getColor(context!!, R.color.secondaryLightColor))
+            .autoDismiss(true)
+            .onPositive { _, _ ->
+                mPresenter.approve(transactionConsumption)
+            }
+            .onNegative { _, _ ->
+                mPresenter.reject(transactionConsumption)
+            }
+            .build()
 
         confirmDialog?.setContent("$name has sent you ${formatAmount(amount, subunitToUnit)} OMG 🤪")
         confirmDialog?.show()
@@ -174,12 +185,13 @@ class RequestorFragment : Fragment(), RequestorContract.View {
         btnSubscribe.isSelected = false
     }
 
-    override fun showApprove() {
-        Toast.makeText(context!!, "Approved", Toast.LENGTH_SHORT).show()
+    override fun showApprove(transactionConsumption: TransactionConsumption) {
+        val amount = formatAmount(transactionConsumption.amount, transactionConsumption.mintedToken.subunitToUnit)
+        Toast.makeText(context!!, "The transaction with amount $amount has been approved. 🕺", Toast.LENGTH_SHORT).show()
     }
 
-    override fun showReject() {
-        Toast.makeText(context!!, "Rejected", Toast.LENGTH_SHORT).show()
+    override fun showReject(transactionConsumption: TransactionConsumption) {
+        val amount = formatAmount(transactionConsumption.amount, transactionConsumption.mintedToken.subunitToUnit)
+        Toast.makeText(context!!, "The transaction with amount $amount has been rejected. 😒", Toast.LENGTH_SHORT).show()
     }
-
 }

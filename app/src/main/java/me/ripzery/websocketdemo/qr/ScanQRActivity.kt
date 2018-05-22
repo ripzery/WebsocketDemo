@@ -43,13 +43,13 @@ class ScanQRActivity : AppCompatActivity(), OMGQRScannerContract.Callback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan_qr)
-        omgapiClient = initializeOMGAPIClientByAuthToken("NSDcbjFHo8qEJeCX39DKJejMO5afZptplqSuM_TChpA", "-c_1xZaBzcDZe2CRPwGq1uJ7qfSB7rHlmMaZG6mKxAQ")
+        omgapiClient = initializeOMGAPIClientByAuthToken("ZWaBP-Kzdknf_RRcVB5F5ApYnW0jA5BlvPCMFgCo4qY", "zjH7vrLnwxuruQaDIZZ6jqKhlgLTsUCCYusBzUMQ3Ww")
         scannerView.startCamera(omgapiClient, this)
     }
 
     private fun initializeOMGAPIClientByAuthToken(authToken: String, apiKey: String): OMGAPIClient {
         val client = EWalletClient.Builder {
-            baseUrl = "http://${IPAddress.HOST}:4000/api/"
+            baseUrl = "${IPAddress.HOST}/api/"
             this.apiKey = apiKey
             authenticationToken = authToken
             debug = true

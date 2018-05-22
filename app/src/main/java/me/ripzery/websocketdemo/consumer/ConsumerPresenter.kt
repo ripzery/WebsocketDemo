@@ -4,6 +4,7 @@ import android.util.Log
 import co.omisego.omisego.OMGAPIClient
 import co.omisego.omisego.custom.OMGCallback
 import co.omisego.omisego.model.APIError
+import co.omisego.omisego.model.BalanceList
 import co.omisego.omisego.model.OMGResponse
 import co.omisego.omisego.model.socket.SocketTopic
 import co.omisego.omisego.model.transaction.consumption.TransactionConsumption
@@ -19,7 +20,6 @@ import co.omisego.omisego.websocket.SocketCustomEventCallback
 import me.ripzery.websocketdemo.network.IPAddress
 import java.math.BigDecimal
 
-
 /*
  * OmiseGO
  *
@@ -31,23 +31,32 @@ class ConsumerPresenter(val mView: ConsumerContract.View) : ConsumerContract.Pre
     private val socketClient: SocketClientContract.Client
 
     init {
-        consumerAPIClient = initializeOMGAPIClientByAuthToken("NSDcbjFHo8qEJeCX39DKJejMO5afZptplqSuM_TChpA", "-c_1xZaBzcDZe2CRPwGq1uJ7qfSB7rHlmMaZG6mKxAQ")
-        socketClient = initializeSocketClientByAuthToken("NSDcbjFHo8qEJeCX39DKJejMO5afZptplqSuM_TChpA", "-c_1xZaBzcDZe2CRPwGq1uJ7qfSB7rHlmMaZG6mKxAQ")
+        consumerAPIClient = initializeOMGAPIClientByAuthToken("ZWaBP-Kzdknf_RRcVB5F5ApYnW0jA5BlvPCMFgCo4qY", "zjH7vrLnwxuruQaDIZZ6jqKhlgLTsUCCYusBzUMQ3Ww")
+        socketClient = initializeSocketClientByAuthToken("ZWaBP-Kzdknf_RRcVB5F5ApYnW0jA5BlvPCMFgCo4qY", "zjH7vrLnwxuruQaDIZZ6jqKhlgLTsUCCYusBzUMQ3Ww")
     }
 
     override fun consume(amount: BigDecimal, transactionRequest: TransactionRequest) {
         consumerAPIClient.consumeTransactionRequest(transactionRequest.toTransactionConsumptionParams(amount)!!)
-                .enqueue(object : OMGCallback<TransactionConsumption> {
-                    override fun fail(response: OMGResponse<APIError>) {
+            .enqueue(object : OMGCallback<TransactionConsumption> {
+                override fun fail(response: OMGResponse<APIError>) {
+                }
 
-                    }
-
-                    override fun success(response: OMGResponse<TransactionConsumption>) {
-                        mView.showConsumption(response.data)
-                    }
-                })
+                override fun success(response: OMGResponse<TransactionConsumption>) {
+                    mView.showConsumption(response.data)
+                }
+            })
     }
 
+    override fun getBalance() {
+        consumerAPIClient.listBalances().enqueue(object : OMGCallback<BalanceList> {
+            override fun success(response: OMGResponse<BalanceList>) {
+                mView.showBalance(response.data.data[0].balances[0])
+            }
+
+            override fun fail(response: OMGResponse<APIError>) {
+            }
+        })
+    }
 
     override fun doSubscribe(transactionConsumption: TransactionConsumption) {
         transactionConsumption.startListeningEvents(socketClient, mapOf(), object : SocketCustomEventCallback.TransactionConsumptionCallback() {
@@ -58,6 +67,7 @@ class ConsumerPresenter(val mView: ConsumerContract.View) : ConsumerContract.Pre
             override fun onTransactionConsumptionFinalizedSuccess(transactionConsumption: TransactionConsumption) {
                 Log.d("Consumer", transactionConsumption.toString())
                 mView.showConsumption(transactionConsumption)
+                getBalance()
             }
         })
     }
@@ -65,7 +75,6 @@ class ConsumerPresenter(val mView: ConsumerContract.View) : ConsumerContract.Pre
     override fun getTransactionById(id: String) {
         consumerAPIClient.retrieveTransactionRequest(TransactionRequestParams(id)).enqueue(object : OMGCallback<TransactionRequest> {
             override fun fail(response: OMGResponse<APIError>) {
-
             }
 
             override fun success(response: OMGResponse<TransactionRequest>) {
@@ -80,10 +89,10 @@ class ConsumerPresenter(val mView: ConsumerContract.View) : ConsumerContract.Pre
 
     private fun initializeOMGAPIClientByAuthToken(authToken: String, apiKey: String): OMGAPIClient {
         val client = EWalletClient.Builder {
-            baseUrl = "http://${IPAddress.HOST}:4000/api/"
+            baseUrl = "${IPAddress.HOST}/api/"
             this.apiKey = apiKey
             authenticationToken = authToken
-            debug = true
+            debug = false
         }.build()
 
         return OMGAPIClient(client)
@@ -91,7 +100,7 @@ class ConsumerPresenter(val mView: ConsumerContract.View) : ConsumerContract.Pre
 
     private fun initializeSocketClientByAuthToken(authToken: String, apiKey: String): SocketClientContract.Client {
         val socketClient = OMGSocketClient.Builder {
-            baseURL = "ws://${IPAddress.HOST}:4000/api/socket/"
+            baseURL = "${IPAddress.HOST_SOCKET}/api/socket/"
             this.apiKey = apiKey
             authenticationToken = authToken
             debug = true
@@ -113,5 +122,4 @@ class ConsumerPresenter(val mView: ConsumerContract.View) : ConsumerContract.Pre
 
         return socketClient
     }
-
 }

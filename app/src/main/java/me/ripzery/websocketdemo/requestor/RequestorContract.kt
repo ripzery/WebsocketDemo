@@ -1,8 +1,8 @@
 package me.ripzery.websocketdemo.requestor
 
+import co.omisego.omisego.model.Balance
 import co.omisego.omisego.model.transaction.consumption.TransactionConsumption
 import co.omisego.omisego.model.transaction.request.TransactionRequest
-import me.ripzery.websocketdemo.data.ConsumeLog
 import java.math.BigDecimal
 
 /*
@@ -16,13 +16,15 @@ interface RequestorContract {
         fun showTransactionInfo(transactionRequest: TransactionRequest)
         fun showSubscribe()
         fun showUnsubscribe()
-        fun addLog(consumeLog: ConsumeLog)
+        fun addLog(transactionConsumption: TransactionConsumption)
         fun showDialog(transactionConsumption: TransactionConsumption)
-        fun showApprove()
-        fun showReject()
+        fun showApprove(transactionConsumption: TransactionConsumption)
+        fun showReject(transactionConsumption: TransactionConsumption)
+        fun showBalance(balance: Balance)
     }
 
     interface Presenter {
+        fun getBalance()
         fun doTransactionRequest(amount: BigDecimal)
         fun doSubscribe(transactionRequest: TransactionRequest)
         fun doUnsubscribe(transactionRequest: TransactionRequest)
