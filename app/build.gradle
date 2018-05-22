@@ -13,11 +13,20 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        buildTypes.each {
+            it.buildConfigField "String", "USER_CONSUMER_AUTH_TOKEN", USER_CONSUMER_AUTH_TOKEN
+            it.buildConfigField "String", "USER_REQUESTOR_AUTH_TOKEN", USER_REQUESTOR_AUTH_TOKEN
+            it.buildConfigField "String", "API_KEY", API_KEY
+            it.buildConfigField "String", "HOST", HOST
+            it.buildConfigField "String", "HOST_SOCKET", HOST_SOCKET
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+
 }
 
 dependencies {

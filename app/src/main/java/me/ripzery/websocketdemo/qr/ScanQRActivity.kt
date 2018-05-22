@@ -12,8 +12,8 @@ import co.omisego.omisego.model.transaction.request.TransactionRequest
 import co.omisego.omisego.network.ewallet.EWalletClient
 import co.omisego.omisego.qrcode.scanner.OMGQRScannerContract
 import kotlinx.android.synthetic.main.activity_scan_qr.*
+import me.ripzery.websocketdemo.BuildConfig
 import me.ripzery.websocketdemo.R
-import me.ripzery.websocketdemo.network.IPAddress
 
 
 /*
@@ -49,7 +49,7 @@ class ScanQRActivity : AppCompatActivity(), OMGQRScannerContract.Callback {
 
     private fun initializeOMGAPIClientByAuthToken(authToken: String, apiKey: String): OMGAPIClient {
         val client = EWalletClient.Builder {
-            baseUrl = "${IPAddress.HOST}/api/"
+            baseUrl = "${BuildConfig.HOST}/api/"
             this.apiKey = apiKey
             authenticationToken = authToken
             debug = true
