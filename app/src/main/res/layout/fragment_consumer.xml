@@ -65,8 +65,8 @@
         app:cardCornerRadius="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:strokeColor="#d7c4d1">
+        app:layout_constraintTop_toBottomOf="@id/tvUserInfo"
+        app:strokeColor="#d7c4d1" app:layout_constraintHorizontal_bias="0.0">
 
         <TextView
             android:id="@+id/tvTitle"
@@ -74,11 +74,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="Transaction" />
+            android:text="Transaction"/>
 
         <include
             android:id="@+id/layoutTransaction"
-            layout="@layout/layout_transaction" />
+            layout="@layout/layout_transaction"/>
 
         <TextView
             android:id="@+id/tvEmpty"
@@ -90,7 +90,7 @@
             android:fontFamily="@font/raleway_semibold"
             android:text="@string/empty"
             android:textColor="@color/secondaryTextColor"
-            android:visibility="visible" />
+            android:visibility="visible"/>
 
     </android.support.design.card.MaterialCardView>
 
@@ -108,7 +108,7 @@
         app:cornerRadius="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnConsume" />
+        app:layout_constraintTop_toBottomOf="@+id/btnConsume" app:layout_constraintHorizontal_bias="0.0"/>
 
     <android.support.design.button.MaterialButton
         android:id="@+id/btnScanQR"
@@ -123,5 +123,18 @@
         app:cornerRadius="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnConsume" />
+
+    <TextView
+        android:id="@+id/tvUserInfo"
+        style="@style/TextHeadline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="User2's balance = Fetching..."
+        android:textColor="@color/primaryTextColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
 </android.support.constraint.ConstraintLayout>

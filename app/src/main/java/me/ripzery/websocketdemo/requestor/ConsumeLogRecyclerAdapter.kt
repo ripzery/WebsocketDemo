@@ -8,13 +8,13 @@ import kotlinx.android.synthetic.main.viewholder_tx_consumption_log.view.*
 import me.ripzery.websocketdemo.R
 import me.ripzery.websocketdemo.data.ConsumeLog
 
-
 /*
  * OmiseGO
  *
  * Created by Phuchit Sirimongkolsathien on 19/5/2018 AD.
  * Copyright © 2017-2018 OmiseGO. All rights reserved.
  */
+
 class ConsumeLogRecyclerAdapter(private val list: MutableList<ConsumeLog>) : RecyclerView.Adapter<ConsumeLogRecyclerAdapter.ConsumeLogVH>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConsumeLogVH {
         val rootView = LayoutInflater.from(parent.context).inflate(R.layout.viewholder_tx_consumption_log, parent, false)
@@ -35,8 +35,7 @@ class ConsumeLogRecyclerAdapter(private val list: MutableList<ConsumeLog>) : Rec
     inner class ConsumeLogVH(val rootView: View) : RecyclerView.ViewHolder(rootView) {
         fun setModel(data: ConsumeLog) {
             rootView.tvTitle.text = data.name
-            val amount = rootView.resources.getString(R.string.sent_amount)
-            rootView.tvAmount.text = String.format(amount, data.amount.toInt())
+            rootView.tvAmount.text = "has sent ${data.amount} OMG."
         }
     }
 

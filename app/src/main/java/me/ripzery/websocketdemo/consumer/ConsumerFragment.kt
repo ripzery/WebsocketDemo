@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import co.omisego.omisego.model.Balance
 import co.omisego.omisego.model.transaction.consumption.TransactionConsumption
 import co.omisego.omisego.model.transaction.request.TransactionRequest
 import kotlinx.android.synthetic.main.fragment_consumer.*
@@ -24,6 +25,7 @@ import kotlinx.android.synthetic.main.layout_transaction.*
 import me.ripzery.websocketdemo.R
 import me.ripzery.websocketdemo.qr.ScanQRActivity
 import me.ripzery.websocketdemo.viewmodels.TransactionRequestViewModel
+import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.time.ZoneId
@@ -34,7 +36,7 @@ class ConsumerFragment : Fragment(), ConsumerContract.View {
     private lateinit var transactionConsumption: TransactionConsumption
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+        savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_consumer, container, false)
     }
 
@@ -67,13 +69,13 @@ class ConsumerFragment : Fragment(), ConsumerContract.View {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
-
         })
-
 
         btnScanQR.setOnClickListener {
             startActivityForResult(Intent(this.activity, ScanQRActivity::class.java), 100)
         }
+
+        mPresenter.getBalance()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -111,9 +113,21 @@ class ConsumerFragment : Fragment(), ConsumerContract.View {
         }
     }
 
+    override fun showApprove(transactionConsumption: TransactionConsumption) {
+    }
+
+    override fun showReject(transactionConsumption: TransactionConsumption) {
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun showBalance(balance: Balance) {
+        TransitionManager.beginDelayedTransition(layoutRootConsumer)
+        tvUserInfo.text = "User2's balance = ${formatAmount(balance.amount, balance.mintedToken.subunitToUnit)} OMG"
+    }
+
     override fun showConsumption(transactionConsumption: TransactionConsumption) {
         this.transactionConsumption = transactionConsumption
-        Toast.makeText(activity, "Consume transaction success", Toast.LENGTH_SHORT).show()
+        mPresenter.doSubscribe(transactionConsumption)
         btnSubscribe.isEnabled = true
     }
 
@@ -125,5 +139,10 @@ class ConsumerFragment : Fragment(), ConsumerContract.View {
     override fun showUnsubscribe() {
         btnSubscribe.text = "Unsubscribe"
         btnSubscribe.isSelected = false
+    }
+
+    private fun formatAmount(amount: BigDecimal, subunitToUnit: BigDecimal): String {
+        val amount = amount.divide(subunitToUnit, 2, RoundingMode.HALF_EVEN)
+        return DecimalFormat("#,###.00").format(amount)
     }
 }

@@ -9,11 +9,10 @@ import co.omisego.omisego.OMGAPIClient
 import co.omisego.omisego.model.APIError
 import co.omisego.omisego.model.OMGResponse
 import co.omisego.omisego.model.transaction.request.TransactionRequest
-import co.omisego.omisego.network.ewallet.EWalletClient
 import co.omisego.omisego.qrcode.scanner.OMGQRScannerContract
 import kotlinx.android.synthetic.main.activity_scan_qr.*
 import me.ripzery.websocketdemo.R
-import me.ripzery.websocketdemo.network.IPAddress
+import me.ripzery.websocketdemo.network.consumerOMGClient
 
 
 /*
@@ -43,19 +42,7 @@ class ScanQRActivity : AppCompatActivity(), OMGQRScannerContract.Callback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan_qr)
-        omgapiClient = initializeOMGAPIClientByAuthToken("NSDcbjFHo8qEJeCX39DKJejMO5afZptplqSuM_TChpA", "-c_1xZaBzcDZe2CRPwGq1uJ7qfSB7rHlmMaZG6mKxAQ")
-        scannerView.startCamera(omgapiClient, this)
-    }
-
-    private fun initializeOMGAPIClientByAuthToken(authToken: String, apiKey: String): OMGAPIClient {
-        val client = EWalletClient.Builder {
-            baseUrl = "http://${IPAddress.HOST}:4000/api/"
-            this.apiKey = apiKey
-            authenticationToken = authToken
-            debug = true
-        }.build()
-
-        return OMGAPIClient(client)
+        scannerView.startCamera(consumerOMGClient, this)
     }
 
     override fun onStop() {
@@ -65,6 +52,6 @@ class ScanQRActivity : AppCompatActivity(), OMGQRScannerContract.Callback {
 
     override fun onStart() {
         super.onStart()
-        scannerView.startCamera(omgapiClient, this)
+        scannerView.startCamera(consumerOMGClient, this)
     }
 }

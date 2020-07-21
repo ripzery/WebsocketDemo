@@ -1,9 +1,9 @@
 package me.ripzery.websocketdemo.consumer
 
+import co.omisego.omisego.model.Balance
 import co.omisego.omisego.model.transaction.consumption.TransactionConsumption
 import co.omisego.omisego.model.transaction.request.TransactionRequest
 import java.math.BigDecimal
-
 
 /*
  * OmiseGO
@@ -17,6 +17,9 @@ interface ConsumerContract {
         fun showSubscribe()
         fun showUnsubscribe()
         fun showTransactionRequest(transactionRequest: TransactionRequest)
+        fun showApprove(transactionConsumption: TransactionConsumption)
+        fun showReject(transactionConsumption: TransactionConsumption)
+        fun showBalance(balance: Balance)
     }
 
     interface Presenter {
@@ -24,5 +27,6 @@ interface ConsumerContract {
         fun getTransactionById(id: String)
         fun doSubscribe(transactionConsumption: TransactionConsumption)
         fun doUnsubscribe(transactionConsumption: TransactionConsumption)
+        fun getBalance()
     }
 }
